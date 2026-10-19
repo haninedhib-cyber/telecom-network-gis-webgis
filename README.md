@@ -13,7 +13,7 @@
 
 This report presents my engineering internship at Tunisie Telecom, Regional Directorate of Mahdia, during July 2026.
 
-📘 **[Read the Internship Report (PDF)](./Rapport_Stage_Ouvrier_corrige.pdf)**
+📘 **[Read the Internship Report (PDF)](./Rapport_Stage_Ouvrier.pdf)**
 
 The report focuses on telecommunications access networks, Geographic Information Systems (GIS), and the exploration of a local GIS/WebGIS environment for managing and visualizing network-related spatial data.
 
@@ -136,7 +136,7 @@ I aim to strengthen my technical skills through practical projects and engineeri
 ## 📁 Repository Contents
 
 - `README.md` — Project overview and internship information.
-- `Rapport_Stage_Ouvrier_corrige.pdf` — Engineering internship report in French.
+- `Rapport_Stage_Ouvrier.pdf` — Engineering internship report in French.
 
 ---
 
