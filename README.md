@@ -1,58 +1,57 @@
-# Telecommunications Network GIS & WebGIS
+# Telecommunications Networks, GIS & WebGIS
 
-**Engineering Internship Report | ENIT | 2026**
+**ICT Engineering Student at ENIT | Engineering Internship Report | 2026**
 
-Exploring telecommunications networks, Geographic Information Systems (GIS), and WebGIS technologies through an engineering internship at Tunisie Telecom, Regional Directorate of Mahdia, Tunisia.
+## About This Project
 
-## Overview
+This repository presents my engineering internship experience at **Tunisie Telecom — Regional Directorate of Mahdia, Tunisia**, as part of my studies at the **National Engineering School of Tunis (ENIT)**.
 
-This report presents the technical knowledge and practical experience gained within the Geographic Information Systems (GIS) service.
-
-The work focused on telecommunications access networks, geographic infrastructure management, spatial databases, and a local WebGIS environment.
+The internship focused on telecommunications access networks, Geographic Information Systems (GIS), spatial data management, and WebGIS technologies.
 
 ## Technical Areas
 
-- **Telecommunications:** Copper networks, FTTH, GPON, Point-to-Point (P2P), and AirPON.
-- **GIS:** Geographic representation and management of telecommunications infrastructure.
-- **Spatial Database:** PostgreSQL and PostGIS.
-- **Geospatial Services:** GeoServer, WMS, and WFS.
-- **Metadata Management:** GeoNetwork.
-- **WebGIS:** Interactive map visualization and geographic data management with OpenLayers.
-- **Desktop GIS:** QGIS.
+- **Telecommunications Networks:** Copper networks, FTTH, GPON, Point-to-Point (P2P), and AirPON.
+- **Geographic Information Systems (GIS):** Geographic representation and management of telecommunications infrastructure.
+- **Spatial Databases:** PostgreSQL and PostGIS.
+- **Geospatial Data Publishing:** GeoServer, WMS, and WFS.
+- **Geospatial Metadata:** GeoNetwork.
+- **WebGIS Development:** OpenLayers for interactive map visualization and geographic data management.
+- **Desktop GIS:** QGIS for working with geographic data and map layers.
 
-## Technology Stack
+## Technologies Used
 
 `PostgreSQL` · `PostGIS` · `QGIS` · `GeoServer` · `GeoNetwork` · `OpenLayers` · `WMS/WFS`
 
 ## Key Learning Outcomes
 
 - Studied copper and fiber-optic access network architectures.
-- Explored the representation of telecommunications equipment in a GIS.
+- Explored how telecommunications infrastructure is represented and managed in a GIS.
 - Worked with spatial data and a local PostgreSQL/PostGIS environment.
-- Explored geographic data publishing and metadata cataloguing.
-- Developed a local WebGIS interface to visualize map layers, inspect attributes, manage geographic entities, and measure distances.
+- Explored geospatial data publishing and metadata cataloguing.
+- Developed a local WebGIS interface for visualizing map layers, inspecting attributes, managing geographic entities, and measuring distances.
 
 ## Internship Details
 
-| Item | Details |
+| Information | Details |
 |---|---|
-| Organization | Tunisie Telecom |
+| Academic Institution | National Engineering School of Tunis (ENIT) |
+| Field of Study | Information and Communication Technologies (ICT) Engineering |
+| Host Organization | Tunisie Telecom |
 | Department | Geographic Information Systems (GIS) |
 | Location | Mahdia, Tunisia |
-| Institution | National Engineering School of Tunis (ENIT) |
-| Period | July 2026 |
+| Internship Period | July 2026 |
 | Academic Year | 2025–2026 |
 
-## Report
+## Internship Report
 
-The complete report is available in French.
+The full report is written in French.
 
 **[Read the Internship Report (PDF)](Rapport_Stage_Ouvrier_corrige_.pdf)**
 
 ## Confidentiality
 
-This project documents academic learning and technical work. Confidential company information, sensitive network data, and unauthorized infrastructure diagrams or screenshots must not be shared publicly.
+This repository documents academic learning and technical work. Sensitive company information, internal network data, and infrastructure diagrams or screenshots that have not been authorized for publication must remain private.
 
 ---
 
-*Engineering studies in Telecommunications and Information and Communication Technologies — ENIT.*
+*ICT Engineering Student — National Engineering School of Tunis (ENIT).* 
