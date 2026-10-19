@@ -1,41 +1,64 @@
 # Telecommunications Networks, GIS & WebGIS
 
-**ICT Engineering Student at ENIT | Engineering Internship Report | 2026**
+**ICT Engineering Student @ ENIT | Telecommunications · Geospatial Technologies · WebGIS**
 
-## About This Project
+Exploring the intersection of telecommunications infrastructure, geospatial data management, and interactive web mapping through an engineering internship at **Tunisie Telecom — Regional Directorate of Mahdia, Tunisia**.
 
-This repository presents my engineering internship experience at **Tunisie Telecom — Regional Directorate of Mahdia, Tunisia**, as part of my studies at the **National Engineering School of Tunis (ENIT)**.
+## Overview
 
-The internship focused on telecommunications access networks, Geographic Information Systems (GIS), spatial data management, and WebGIS technologies.
+How can telecommunications infrastructure be represented, organized, and explored through geographic information systems?
 
-## Technical Areas
+This project documents my engineering internship experience within the Geographic Information Systems (GIS) service at Tunisie Telecom. It combines the study of telecommunications access networks with practical exploration of spatial databases, geospatial data services, and WebGIS technologies.
 
-- **Telecommunications Networks:** Copper networks, FTTH, GPON, Point-to-Point (P2P), and AirPON.
-- **Geographic Information Systems (GIS):** Geographic representation and management of telecommunications infrastructure.
-- **Spatial Databases:** PostgreSQL and PostGIS.
-- **Geospatial Data Publishing:** GeoServer, WMS, and WFS.
-- **Geospatial Metadata:** GeoNetwork.
-- **WebGIS Development:** OpenLayers for interactive map visualization and geographic data management.
-- **Desktop GIS:** QGIS for working with geographic data and map layers.
+The work also involved setting up a local GIS/WebGIS environment to understand the workflow from spatial data storage to interactive map visualization.
 
-## Technologies Used
+## Technical Focus
 
-`PostgreSQL` · `PostGIS` · `QGIS` · `GeoServer` · `GeoNetwork` · `OpenLayers` · `WMS/WFS`
+### Telecommunications Networks
+- Copper access networks
+- Fiber-to-the-Home (FTTH)
+- Gigabit Passive Optical Network (GPON)
+- Point-to-Point (P2P) architecture
+- AirPON technology
 
-## Key Learning Outcomes
+### Geographic Information Systems
+- Geographic representation of telecommunications infrastructure
+- Spatial data organization and visualization
+- Exploration of network equipment and geographic layers
+- Desktop GIS workflows using QGIS
 
-- Studied copper and fiber-optic access network architectures.
-- Explored how telecommunications infrastructure is represented and managed in a GIS.
-- Worked with spatial data and a local PostgreSQL/PostGIS environment.
-- Explored geospatial data publishing and metadata cataloguing.
-- Developed a local WebGIS interface for visualizing map layers, inspecting attributes, managing geographic entities, and measuring distances.
+### Spatial Data & WebGIS
+- **PostgreSQL / PostGIS** — spatial data storage and management
+- **GeoServer** — geospatial data publishing
+- **WMS / WFS** — web services for geographic data
+- **GeoNetwork** — geospatial metadata cataloguing
+- **OpenLayers** — interactive web mapping
+
+## Technology Stack
+
+`PostgreSQL` · `PostGIS` · `QGIS` · `GeoServer` · `GeoNetwork` · `OpenLayers` · `WMS` · `WFS`
+
+## Practical Work & Learning Outcomes
+
+- Studied telecommunications access network architectures and their geographic representation.
+- Explored the integration and organization of network information within a GIS environment.
+- Set up and worked with a local spatial database using PostgreSQL and PostGIS.
+- Explored geospatial data publication and metadata management using GeoServer and GeoNetwork.
+- Implemented a local WebGIS interface for viewing geographic layers, inspecting attributes, managing geographic entities, and measuring distances.
+- Developed a better understanding of the relationship between telecommunications infrastructure, spatial databases, and web-based mapping.
+
+## Project Workflow
+
+**Telecommunications Infrastructure → Spatial Data → GIS & Geospatial Services → Interactive WebGIS**
+
+The workflow illustrates how geographic data can be organized, published, and visualized through complementary GIS technologies.
 
 ## Internship Details
 
-| Information | Details |
+| Category | Information |
 |---|---|
-| Academic Institution | National Engineering School of Tunis (ENIT) |
-| Field of Study | Information and Communication Technologies (ICT) Engineering |
+| Academic Program | ICT Engineering |
+| Institution | National Engineering School of Tunis (ENIT) |
 | Host Organization | Tunisie Telecom |
 | Department | Geographic Information Systems (GIS) |
 | Location | Mahdia, Tunisia |
@@ -44,14 +67,17 @@ The internship focused on telecommunications access networks, Geographic Informa
 
 ## Internship Report
 
-The full report is written in French.
+The complete report is available in French.
 
 **[Read the Internship Report (PDF)](Rapport_Stage_Ouvrier_corrige_.pdf)**
 
-## Confidentiality
+The report describes the internship context, telecommunications network architectures, GIS activities, and the local GIS/WebGIS environment explored during the placement.
 
-This repository documents academic learning and technical work. Sensitive company information, internal network data, and infrastructure diagrams or screenshots that have not been authorized for publication must remain private.
+## Academic Context
+
+This work was completed as part of my ICT engineering education at ENIT. It reflects my practical learning in telecommunications, geographic information systems, spatial data management, and WebGIS technologies.
 
 ---
 
-*ICT Engineering Student — National Engineering School of Tunis (ENIT).* 
+**Hanin EDHIB**  
+*ICT Engineering Student — National Engineering School of Tunis (ENIT)*
