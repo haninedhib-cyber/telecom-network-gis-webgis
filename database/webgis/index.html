@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Telecom Network WebGIS — Démo</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/ol@9.2.4/ol.css">
+<style>
+:root{--bg:#f6f8fa;--panel:#fff;--text:#1f2937;--muted:#6b7280;--line:#d8dee4;--accent:#2980b9;--danger:#c0392b}
+@media (prefers-color-scheme:dark){:root{--bg:#0d1117;--panel:#161b22;--text:#e6edf3;--muted:#8b949e;--line:#30363d;--accent:#58a6ff;--danger:#f85149}}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0}
+body{display:flex;font:14px/1.45 system-ui,-apple-system,"Segoe UI",sans-serif;background:var(--bg);color:var(--text)}
+aside{width:290px;flex:none;background:var(--panel);border-right:1px solid var(--line);padding:16px;overflow-y:auto}
+h1{font-size:17px;margin:0 0 2px}
+h2{font-size:13px;margin:18px 0 8px;color:var(--muted);font-weight:600}
+.sub{color:var(--muted);font-size:12px;margin:0}
+label{display:flex;align-items:center;gap:8px;padding:3px 0;cursor:pointer}
+.dot{width:12px;height:12px;border-radius:50%;flex:none}
+.bar{width:16px;height:4px;border-radius:2px;flex:none}
+.tools{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+button{font:inherit;padding:7px 8px;border:1px solid var(--line);border-radius:6px;background:var(--panel);color:var(--text);cursor:pointer}
+button:hover{border-color:var(--accent)}
+button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+button.on{background:var(--accent);border-color:var(--accent);color:#fff}
+button.del{color:var(--danger)}
+#info{border:1px solid var(--line);border-radius:6px;padding:8px 10px;min-height:56px;font-size:13px}
+#info dt{color:var(--muted);float:left;clear:left;width:92px}
+#info dd{margin:0 0 2px 98px;word-break:break-word}
+#hint{color:var(--muted);font-size:12px;margin:8px 0 0}
+#map{flex:1;min-width:0}
+.note{margin-top:18px;padding-top:10px;border-top:1px solid var(--line);color:var(--muted);font-size:12px}
+@media (max-width:760px){body{flex-direction:column-reverse}aside{width:100%;height:46%;border-right:0;border-top:1px solid var(--line)}#map{height:54%;flex:none}}
+</style>
+</head>
+<body>
+<aside>
+  <h1>Réseau d’accès fibre</h1>
+  <p class="sub">Mahdia — démonstration SIG/WebGIS (données fictives)</p>
+
+  <h2>Couches</h2>
+  <div id="layers"></div>
+
+  <h2>Outils</h2>
+  <div class="tools">
+    <button data-tool="select" class="on">Consulter</button>
+    <button data-tool="add">Ajouter un client</button>
+    <button data-tool="measure">Mesurer</button>
+    <button id="del" class="del">Supprimer</button>
+  </div>
+  <p id="hint"></p>
+
+  <h2>Informations</h2>
+  <dl id="info"><dd>Cliquez sur un élément de la carte.</dd></dl>
+
+  <button id="reset" style="margin-top:14px;width:100%">Réinitialiser les données</button>
+  <p class="note">Les modifications restent dans le navigateur. Dans la version avec GeoServer, elles sont écrites en base PostGIS via WFS-T.</p>
+</aside>
+<div id="map"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/ol@9.2.4/dist/ol.js"></script>
+<script>
+// ---------- Données fictives (identiques à database/sample_data.sql) ----------
+const PTS = [
+ ['centrale_optique','NRO-MAHDIA',11.0622,35.5047,{olt:'OLT-01 Huawei, 16 ports'}],
+ ['sro','SRO-01',11.0560,35.5100,{splitter:'1:32'}],['sro','SRO-02',11.0700,35.5000,{splitter:'1:32'}],
+ ['ftb','FTB-01',11.0540,35.5120,{sro:'SRO-01'}],['ftb','FTB-02',11.0580,35.5115,{sro:'SRO-01'}],
+ ['ftb','FTB-03',11.0690,35.5020,{sro:'SRO-02'}],['ftb','FTB-04',11.0720,35.5010,{sro:'SRO-02'}],
+ ['pro','PRO1_SRO1',11.0555,35.5095,{sro:'SRO-01'}],['pro','PRO2_SRO2',11.0695,35.4995,{sro:'SRO-02'}],
+ ['clients','C-001',11.0535,35.5125,{ftb:'FTB-01'}],['clients','C-002',11.0585,35.5122,{ftb:'FTB-02'}],
+ ['clients','C-003',11.0685,35.5025,{ftb:'FTB-03'}],['clients','C-004',11.0725,35.5015,{ftb:'FTB-04'}]
+];
+const CAB = [
+ ['TR-01','transport',24,'NRO-MAHDIA','SRO-01'],['TR-02','transport',24,'NRO-MAHDIA','SRO-02'],
+ ['DI-01','distribution',12,'SRO-01','FTB-01'],['DI-02','distribution',12,'SRO-01','FTB-02'],
+ ['DI-03','distribution',12,'SRO-02','FTB-03'],['DI-04','distribution',12,'SRO-02','FTB-04'],
+ ['BR-01','branchement',1,'FTB-01','C-001'],['BR-02','branchement',1,'FTB-02','C-002'],
+ ['BR-03','branchement',1,'FTB-03','C-003'],['BR-04','branchement',1,'FTB-04','C-004']
+];
+const LABELS = {centrale_optique:'Centrale optique',sro:'SRO',ftb:'FTB',pro:'PRO',clients:'Clients',fibre_optique:'Fibre optique'};
+const PTCOL = {centrale_optique:['#2c3e50',9],sro:['#27ae60',7],ftb:['#e67e22',6],pro:['#8e44ad',5],clients:['#7f8c8d',4]};
+const CABCOL = {transport:['#2980b9',4],distribution:['#27ae60',3],branchement:['#e67e22',2]};
+
+// ---------- Styles ----------
+const S = ol.style;
+const pointStyle = (c,r) => new S.Style({image:new S.Circle({radius:r,fill:new S.Fill({color:c}),stroke:new S.Stroke({color:'#fff',width:2})})});
+const lineStyle = f => { const [c,w] = CABCOL[f.get('type_cable')]; return new S.Style({stroke:new S.Stroke({color:c,width:w})}); };
+const hlStyle = f => f.getGeometry().getType()==='Point'
+  ? new S.Style({image:new S.Circle({radius:12,stroke:new S.Stroke({color:'#f1c40f',width:4}),fill:new S.Fill({color:'rgba(241,196,15,.35)'})})})
+  : new S.Style({stroke:new S.Stroke({color:'#f1c40f',width:6})});
+
+// ---------- Couches ----------
+const src = {}, layers = [], coords = {};
+for (const name of Object.keys(LABELS)) {
+  src[name] = new ol.source.Vector();
+  const style = name==='fibre_optique' ? lineStyle : pointStyle(...PTCOL[name]);
+  const l = new ol.layer.Vector({source:src[name], style, zIndex:name==='fibre_optique'?1:2});
+  layers.push(l);
+}
+function load() {
+  Object.values(src).forEach(s => s.clear());
+  for (const [layer,nom,lon,lat,p] of PTS) {
+    coords[nom] = ol.proj.fromLonLat([lon,lat]);
+    src[layer].addFeature(new ol.Feature({geometry:new ol.geom.Point(coords[nom]),layer,nom,...p}));
+  }
+  for (const [nom,type_cable,capacite_fo,de,vers] of CAB)
+    src.fibre_optique.addFeature(new ol.Feature({geometry:new ol.geom.LineString([coords[de],coords[vers]]),layer:'fibre_optique',nom,type_cable,capacite_fo}));
+}
+load();
+
+// ---------- Carte ----------
+const measureSrc = new ol.source.Vector();
+const map = new ol.Map({
+  target:'map',
+  layers:[new ol.layer.Tile({source:new ol.source.XYZ({url:'https://{a-d}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png',attributions:'© OpenStreetMap contributors © CARTO',maxZoom:19})}), ...layers,
+    new ol.layer.Vector({source:measureSrc,zIndex:9,style:new S.Style({
+      stroke:new S.Stroke({color:'#e11d48',width:3,lineDash:[8,6]}),
+      image:new S.Circle({radius:4,fill:new S.Fill({color:'#e11d48'})})})})],
+  view:new ol.View({center:ol.proj.fromLonLat([11.0630,35.5060]),zoom:15})
+});
+
+// ---------- Panneau des couches ----------
+const box = document.getElementById('layers');
+Object.keys(LABELS).forEach((name,i) => {
+  const lab = document.createElement('label');
+  const cb = document.createElement('input'); cb.type='checkbox'; cb.checked=true;
+  cb.onchange = () => layers[i].setVisible(cb.checked);
+  const mark = document.createElement('span');
+  mark.className = name==='fibre_optique' ? 'bar' : 'dot';
+  mark.style.background = name==='fibre_optique' ? 'linear-gradient(90deg,#2980b9 33%,#27ae60 33% 66%,#e67e22 66%)' : PTCOL[name][0];
+  lab.append(cb, mark, LABELS[name]);
+  box.append(lab);
+});
+
+// ---------- Consultation ----------
+const info = document.getElementById('info');
+const select = new ol.interaction.Select({style:hlStyle, layers:l => layers.includes(l)});
+map.addInteraction(select);
+select.on('select', () => {
+  const f = select.getFeatures().item(0);
+  info.replaceChildren();
+  if (!f) { const d=document.createElement('dd'); d.textContent='Cliquez sur un élément de la carte.'; info.append(d); return; }
+  const rows = {couche:LABELS[f.get('layer')], ...f.getProperties()};
+  delete rows.geometry; delete rows.layer;
+  for (const [k,v] of Object.entries(rows)) {
+    const dt=document.createElement('dt'), dd=document.createElement('dd');
+    dt.textContent=k; dd.textContent=v; info.append(dt,dd);
+  }
+});
+
+// ---------- Outils : consulter / ajouter / mesurer ----------
+let tool = 'select', pts = [], n = PTS.filter(p => p[0]==='clients').length;
+const hints = {select:'Cliquez sur un élément pour voir ses attributs.',
+  add:'Cliquez sur la carte : un client est créé et relié au FTB le plus proche.',
+  measure:'Cliquez plusieurs points pour mesurer une distance.'};
+const hint = document.getElementById('hint'); hint.textContent = hints.select;
+document.querySelectorAll('[data-tool]').forEach(b => b.onclick = () => {
+  tool = b.dataset.tool; pts = []; measureSrc.clear();
+  document.querySelectorAll('[data-tool]').forEach(x => x.classList.toggle('on', x===b));
+  select.setActive(tool==='select'); select.getFeatures().clear();
+  hint.textContent = hints[tool];
+});
+map.on('click', e => {
+  if (tool==='add') {
+    const ftbs = src.ftb.getFeatures();
+    const near = ftbs.reduce((a,b) => ol.coordinate.squaredDistance(a.getGeometry().getCoordinates(),e.coordinate) <
+                                       ol.coordinate.squaredDistance(b.getGeometry().getCoordinates(),e.coordinate) ? a : b);
+    const nom = 'C-' + String(++n).padStart(3,'0');
+    src.clients.addFeature(new ol.Feature({geometry:new ol.geom.Point(e.coordinate),layer:'clients',nom,ftb:near.get('nom')}));
+    src.fibre_optique.addFeature(new ol.Feature({geometry:new ol.geom.LineString([near.getGeometry().getCoordinates(),e.coordinate]),
+      layer:'fibre_optique',nom:'BR-'+nom.slice(2),type_cable:'branchement',capacite_fo:1}));
+    hint.textContent = nom + ' ajouté et relié à ' + near.get('nom') + '.';
+  }
+  if (tool==='measure') {
+    pts.push(e.coordinate); measureSrc.clear();
+    measureSrc.addFeature(new ol.Feature(new ol.geom.MultiPoint(pts)));
+    if (pts.length>1) {
+      const line = new ol.geom.LineString(pts); measureSrc.addFeature(new ol.Feature(line));
+      const m = ol.sphere.getLength(line);
+      hint.textContent = 'Distance : ' + (m>1000 ? (m/1000).toFixed(2)+' km' : Math.round(m)+' m');
+    }
+  }
+});
+
+// ---------- Suppression / réinitialisation ----------
+document.getElementById('del').onclick = () => {
+  const fs = select.getFeatures();
+  if (!fs.getLength()) { hint.textContent = 'Sélectionnez d’abord un élément (outil Consulter).'; return; }
+  fs.forEach(f => src[f.get('layer')].removeFeature(f));
+  fs.clear(); select.dispatchEvent({type:'select'}); hint.textContent = 'Élément supprimé.';
+};
+document.getElementById('reset').onclick = () => { load(); select.getFeatures().clear(); select.dispatchEvent({type:'select'}); measureSrc.clear(); pts=[]; n=4; hint.textContent='Données réinitialisées.'; };
+</script>
+</body>
+</html>
